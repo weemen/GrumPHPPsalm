@@ -3,6 +3,11 @@
 namespace Weemen\GrumPHPPsalm\Task;
 
 use GrumPHP\Collection\FilesCollection;
+use GrumPHP\Configuration\GrumPHP;
+use GrumPHP\Formatter\ProcessFormatterInterface;
+use GrumPHP\Formatter\RawProcessFormatter;
+use GrumPHP\Process\AsyncProcessRunner;
+use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\AbstractExternalTask;
 use GrumPHP\Task\Context\ContextInterface;
@@ -12,6 +17,24 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Psalm extends AbstractExternalTask
 {
+
+    /**
+     * @param GrumPHP                   $grumPHP
+     * @param ProcessBuilder            $processBuilder
+     * @param AsyncProcessRunner        $processRunner
+     * @param ProcessFormatterInterface $formatter
+     */
+    public function __construct(
+        GrumPHP $grumPHP,
+        ProcessBuilder $processBuilder,
+        AsyncProcessRunner $processRunner,
+        RawProcessFormatter $formatter
+    ) {
+        $this->processBuilder = $processBuilder;
+        $this->processRunner = $processRunner;
+        $this->formatter = $formatter;
+        $this->grumPHP = $grumPHP;
+    }
 
     /**
      * @return string
@@ -63,13 +86,12 @@ class Psalm extends AbstractExternalTask
 
         foreach ($processes as $process) {
             if (!$process->isSuccessful()) {
-                $hasErrors = true;
-                $messages[] = $this->formatter->format($process);
-                $suggestions[] = $this->formatter->formatSuggestion($process);
+                return TaskResult::createFailed($this, $context, $this->formatter->format($process));
+
             }
         }
 
-        return ($hasErrors) ? $this->handleFailedResult($context, $messages, $suggestions) : $this->handleSuccesfullResult($context);
+        return $this->handleSuccesfullResult($context);
     }
 
     /**
@@ -103,17 +125,12 @@ class Psalm extends AbstractExternalTask
 
     /**
      * @param GitPreCommitContext $context
-     * @param array               $messages
-     * @param array               $suggestions
+     * @param                     $process
      *
      * @return TaskResult
      */
-    protected function handleFailedResult(GitPreCommitContext $context, array $messages, array $suggestions)
+    protected function handleFailedResult(GitPreCommitContext $context, $process)
     {
-        return TaskResult::createFailed(
-            $this,
-            $context,
-            $this->formatter->formatErrorMessage($messages, $suggestions)
-        );
+        return TaskResult::createFailed($this, $context, $this->formatter->format($process));
     }
 }

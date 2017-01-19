@@ -6,6 +6,8 @@ namespace Weemen\GrumPHPPsalm;
 use GrumPHP\Collection\FilesCollection;
 use GrumPHP\Configuration\GrumPHP;
 use GrumPHP\Formatter\ProcessFormatterInterface;
+use GrumPHP\Formatter\RawProcessFormatter;
+use GrumPHP\Process\AsyncProcessRunner;
 use GrumPHP\Process\ProcessBuilder;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
@@ -21,12 +23,15 @@ class PsalmTest extends \PHPUnit_Framework_TestCase
         $processBuilder = $this->getMockBuilder(ProcessBuilder::class)
             ->disableOriginalConstructor()
             ->getMock();
-
-        $formatter = $this->createMock(ProcessFormatterInterface::class);
+        $asyncProcessRunner = $this->getMockBuilder(AsyncProcessRunner::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $formatter = $this->createMock(RawProcessFormatter::class);
 
         $grumPHP = new GrumPHP($container);
-        return new Psalm($grumPHP, $processBuilder, $formatter);
+        return new Psalm($grumPHP, $processBuilder, $asyncProcessRunner, $formatter);
     }
+
     /**
      * @test
      */
