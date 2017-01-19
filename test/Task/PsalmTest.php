@@ -9,6 +9,7 @@ use GrumPHP\Formatter\ProcessFormatterInterface;
 use GrumPHP\Formatter\RawProcessFormatter;
 use GrumPHP\Process\AsyncProcessRunner;
 use GrumPHP\Process\ProcessBuilder;
+use GrumPHP\Runner\TaskResult;
 use GrumPHP\Task\Context\GitPreCommitContext;
 use GrumPHP\Task\Context\RunContext;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -93,7 +94,7 @@ class PsalmTest extends \PHPUnit_Framework_TestCase
         $psalmTask  = $this->createPsalmTask();
         $result     = $psalmTask->run($context);
 
-        $this->assertTrue($result->isPassed());
+        $this->assertEquals(TaskResult::SKIPPED,$result->getResultCode());
     }
 
     /**
@@ -120,7 +121,7 @@ class PsalmTest extends \PHPUnit_Framework_TestCase
         $psalmTask  = $this->createPsalmTask();
         $result     = $psalmTask->run($context);
 
-        $this->assertTrue($result->isPassed());
+        $this->assertEquals(TaskResult::SKIPPED,$result->getResultCode());
     }
 
 //    /**

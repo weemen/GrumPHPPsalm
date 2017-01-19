@@ -78,7 +78,7 @@ class Psalm extends AbstractExternalTask
         $files  = $context->getFiles()->name('*.php');
 
         if (! $context instanceof GitPreCommitContext || 0 === count($files)) {
-            return TaskResult::createPassed($this, $context);
+            return TaskResult::createSkipped($this, $context);
         }
 
         $processes = $this->buildProcesses($files);
