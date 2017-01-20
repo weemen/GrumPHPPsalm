@@ -1,12 +1,12 @@
 #GrumPHPPsalm
-This package is an [Psalm](https://github.com/vimeo/psalm) extension for [GrumPHP](https://github.com/phpro/grumphp).
+This package is a [Psalm](https://github.com/vimeo/psalm) extension for [GrumPHP](https://github.com/phpro/grumphp).
 All newly committed files will be analysed by Psalm.
 
 ##Installation
 Add this package using composer, firstly add the packages repository
 
 
-  Then, require the this repository
+Then, require the this repository
 
 ```bash
 	composer require --dev weemen/grumphp-psalm
