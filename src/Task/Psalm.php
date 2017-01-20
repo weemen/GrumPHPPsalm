@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Weemen\GrumPHPPsalm\Task;
 
 use GrumPHP\Collection\FilesCollection;
@@ -39,7 +41,7 @@ class Psalm extends AbstractExternalTask
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return 'psalm';
     }
@@ -47,7 +49,7 @@ class Psalm extends AbstractExternalTask
     /**
      * @return OptionsResolver
      */
-    public function getConfigurableOptions()
+    public function getConfigurableOptions(): OptionsResolver
     {
         $resolver = new OptionsResolver();
         $resolver->setDefaults([
@@ -63,7 +65,7 @@ class Psalm extends AbstractExternalTask
      *
      * @return bool
      */
-    public function canRunInContext(ContextInterface $context)
+    public function canRunInContext(ContextInterface $context): bool
     {
         return ($context instanceof GitPreCommitContext || $context instanceof RunContext);
     }
@@ -73,7 +75,7 @@ class Psalm extends AbstractExternalTask
      *
      * @return TaskResult
      */
-    public function run(ContextInterface $context)
+    public function run(ContextInterface $context): TaskResult
     {
         $files  = $context->getFiles()->name('*.php');
 
@@ -99,7 +101,7 @@ class Psalm extends AbstractExternalTask
      *
      * @return array
      */
-    protected function buildProcesses(FilesCollection $files)
+    protected function buildProcesses(FilesCollection $files): array
     {
         $config = $this->getConfiguration();
 
@@ -118,7 +120,7 @@ class Psalm extends AbstractExternalTask
      *
      * @return TaskResult
      */
-    protected function handleSuccesfullResult(GitPreCommitContext $context)
+    protected function handleSuccesfullResult(GitPreCommitContext $context): TaskResult
     {
         return TaskResult::createPassed($this, $context);
     }
@@ -129,7 +131,7 @@ class Psalm extends AbstractExternalTask
      *
      * @return TaskResult
      */
-    protected function handleFailedResult(GitPreCommitContext $context, $process)
+    protected function handleFailedResult(GitPreCommitContext $context, $process): TaskResult
     {
         return TaskResult::createFailed($this, $context, $this->formatter->format($process));
     }
