@@ -20,7 +20,7 @@
   },
   "require": {
     "php": ">=7.0",
-    "phpro/grumphp": "^0.10",
+    "phpro/grumphp": "^0.11",
     "vimeo/psalm": "^0.2"
   },
   "require-dev": {
