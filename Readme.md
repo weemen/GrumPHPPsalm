@@ -1,8 +1,8 @@
-#GrumPHPPsalm
+# GrumPHPPsalm
 This package is a [Psalm](https://github.com/vimeo/psalm) extension for [GrumPHP](https://github.com/phpro/grumphp).
 All newly committed files will be analysed by Psalm.
 
-##Installation
+## Installation
 Add this package using composer, firstly add the packages repository
 
 
@@ -12,7 +12,7 @@ Then, require the this repository
 	composer require --dev weemen/grumphp-psalm
 ```
 
-##Usage
+## Usage
 First of all, dont forget to create your psaml.xml file
 
 For example:
