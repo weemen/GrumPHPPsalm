@@ -89,7 +89,6 @@ class Psalm extends AbstractExternalTask
         foreach ($processes as $process) {
             if (!$process->isSuccessful()) {
                 return TaskResult::createFailed($this, $context, $this->formatter->format($process));
-
             }
         }
 
